@@ -1,28 +1,31 @@
 import { SxProps } from "@mui/material";
 
 export const LoginStyle: SxProps = {
-  '& .MuiPaper-root': {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100vh",
+  backgroundImage:
+    "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(/bgLogin.jpg)",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+
+  "& .MuiCard-root": {
+    padding: "2rem",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    borderRadius: "12px",
+    textAlign: "center",
+    minWidth: "320px",
+  },
+
+  "& .MuiTextField-root": {
     width: "100%",
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundImage: "linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url(/bgLogin.jpg)",
-    backgroundSize: "cover",
-    backgroundPosition: "center"
+    marginBottom: "1rem",
   },
 
-  '& form': {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignItems: "center",
-    border: "1px solid white",
-    width: "40%",
-    height: "80%"
+  "& .MuiButton-root": {
+    marginTop: "1rem",
+    padding: "10px",
+    fontSize: "16px",
   },
-
-  '& h1': {
-    fontSize: "4rem"
-  }
-}
+};
