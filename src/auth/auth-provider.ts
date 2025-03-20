@@ -15,9 +15,6 @@ export const authProvider: AuthProvider = {
       },
     });
 
-    // hei.salomia.20@gmail.com
-    // salomia's password
-
     return response.ok ? Promise.resolve() : Promise.reject();
   },
 
