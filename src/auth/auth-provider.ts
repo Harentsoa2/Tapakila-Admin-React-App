@@ -4,7 +4,7 @@ export const authProvider: AuthProvider = {
   checkAuth: async function (): Promise<void> {
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      throw new Error("Token introuvable");
+      throw new Error("Veuiller connecter");
     }
 
     const response = await fetch("http://localhost:3000/api/admin", {

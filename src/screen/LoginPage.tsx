@@ -21,7 +21,7 @@ export const LoginPage = () => {
     } catch (error) {
       notify("Erreur d'authentification", { type: "warning" });
     } finally {
-      setLoading(false); // S'assurer que le bouton redevient cliquable
+      setLoading(false);
     }
   };
 
