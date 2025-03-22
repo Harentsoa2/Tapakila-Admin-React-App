@@ -14,6 +14,7 @@ export const LoginStyle: SxProps = {
     padding: "2rem",
     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
     borderRadius: "12px",
+    background: "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5))",
     textAlign: "center",
     minWidth: "320px",
   },
