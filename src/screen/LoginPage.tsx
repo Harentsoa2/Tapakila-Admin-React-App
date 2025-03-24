@@ -21,27 +21,16 @@ export const LoginPage = () => {
     } catch (error) {
       notify("Erreur d'authentification", { type: "warning" });
     } finally {
-      setLoading(false); // S'assurer que le bouton redevient cliquable
+      setLoading(false);
     }
   };
 
   return (
-    // <Box sx={LoginStyle}>
-    //   <Card>
-    //     <form onSubmit={handleSubmit}>
-    //       <h1>Login</h1>
-    //       <TextField label="Email" required={true} />
-    //       <TextField label="Password" required={true} />
-    //       <button type="submit">Login</button>
-    //     </form>
-    //   </Card>
-    // </Box>
-
     <Box sx={LoginStyle}>
       <Card>
         <form onSubmit={handleSubmit}>
-          <h1 style={{ marginBottom: "0.5rem" }}>Se connecter</h1>
-          <p style={{ color: "#666", marginBottom: "1.5rem" }}>
+          <h1 style={{ marginBottom: "0.5rem", color: "rgb(252, 24, 100)" }}>Se connecter</h1>
+          <p style={{ color: " #fff", marginBottom: "1.5rem" }}>
             Veuillez entrer votre email et votre mot de passe
           </p>
 
@@ -76,12 +65,13 @@ export const LoginPage = () => {
             type="submit"
             sx={{
               marginTop: "1rem",
-              backgroundColor: "#1976d2",
-              "&:hover": { backgroundColor: "#1565c0" },
+              color: "white",
+              backgroundColor: "rgb(252, 24, 100)",
+              "&:hover": { backgroundColor: "#fff", color: "rgb(252, 24, 100)"},
             }}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Se connecter"}
+            {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "connecter"}
           </Button>
         </form>
       </Card>
