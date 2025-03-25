@@ -1,5 +1,5 @@
 import { List, useListContext } from "react-admin";
-import { Grid } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import { EventCard } from "./EventCard";
 
 export const EventList = () => {
@@ -15,13 +15,59 @@ const EventListContent = () => {
 
   if (isLoading) return <div>Chargement en cours...</div>;
 
+  // filtrer les eevenement par rapport a la date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const upcomingEvents = data.filter(event => {
+    const eventDate = new Date(event.event_date);
+    return eventDate >= today;
+  });
+
+  const pastEvents = data.filter(event => {
+    const eventDate = new Date(event.event_date);
+    return eventDate < today;
+  });
+
   return (
-    <Grid container spacing={2}>
-      {data.map((event) => (
-        <Grid item key={event.id} xs={12} sm={6} md={4} lg={3}>
-          <EventCard event={event} />
+    <Box sx={{ padding: 2 }}>
+
+
+      <Typography variant="h5" sx={{ marginTop: 3, marginBottom: 2, color: '#2e7d32' }}>
+        Événements à venir
+      </Typography>
+      {upcomingEvents.length > 0 ? (
+        <Grid container spacing={2}>
+          {upcomingEvents.map((event) => (
+            <Grid item key={event.id} xs={12} sm={6} md={4} lg={3}>
+              <EventCard event={event} />
+            </Grid>
+          ))}
         </Grid>
-      ))}
-    </Grid>
+      ) : (
+        <Typography variant="body1" sx={{ marginBottom: 3 }}>
+          Aucun événement à venir pour le moment.
+        </Typography>
+      )}
+
+
+
+      <Typography variant="h5" sx={{ marginTop: 5, marginBottom: 2, color: '#757575' }}>
+        Événements passés
+      </Typography>
+      {pastEvents.length > 0 ? (
+        <Grid container spacing={2}>
+          {pastEvents.map((event) => (
+            <Grid item key={event.id} xs={12} sm={6} md={4} lg={3}>
+              <EventCard event={event} isPastEvent={true} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography variant="body1">
+          Aucun événement passé à afficher.
+        </Typography>
+      )}
+    </Box>
   );
 };
