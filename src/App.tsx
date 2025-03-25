@@ -6,7 +6,7 @@ import { eventsDataProvider } from "./data/events-data-provider.ts";
 import { UserList } from "./components/user/UserList.tsx";
 import { People } from "@mui/icons-material";
 import { EventList } from "./components/events/EventsList.tsx";
-import { People, Event } from "@mui/icons-material";
+import { Event } from "@mui/icons-material";
 import { compositeDataProvider } from "./data/compositeDataProvider.ts";
 
 export const App = () => {
