@@ -99,7 +99,7 @@ export const EventCard = ({ event, isPastEvent = false }) => {
         </Card>
       </motion.div>
 
-      {/* pour les details de l'evenement cliqué */}
+      {/* section pour les evelements cliqué  */}
       <Modal
         open={open}
         onClose={handleClose}
