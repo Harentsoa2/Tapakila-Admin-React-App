@@ -24,7 +24,7 @@ export const UserShow = () => {
             alignItems: "flex-start",
           }}
         >
-          <Stack alignItems="center" sx={{ width: 120 }}>
+          <Stack alignItems="center">
             <Avatar
               src="user_image"
               aria-label="Profil"
