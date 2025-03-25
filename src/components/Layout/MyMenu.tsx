@@ -9,7 +9,6 @@ export const MyMenu = () => (
         "&:hover": {
           color: "#0077FF",
           "& .MuiListItemIcon-root": {
-            // Cible spécifiquement l'icône
             color: "#0077FF",
           },
         },
