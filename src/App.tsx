@@ -1,22 +1,20 @@
-import { Admin, houseDarkTheme, houseLightTheme, Resource } from "react-admin";
+import { Admin, Resource } from "react-admin";
 import { authProvider } from "./auth/auth-provider.ts";
 import { LoginPage } from "./screen/LoginPage.tsx";
-import { userDataProvider } from "./data/users-data-provider.ts";
-import { eventsDataProvider } from "./data/events-data-provider.ts";
 import { UserList } from "./components/user/UserList.tsx";
-import { People } from "@mui/icons-material";
-import { EventList } from "./components/events/EventsList.tsx";
-import { Event } from "@mui/icons-material";
+import { EventList } from "./components/Events/EventsList.tsx";
+import { People, Event } from "@mui/icons-material";
 import { compositeDataProvider } from "./data/compositeDataProvider.ts";
+import { Layout } from "./Layout.tsx";
+import { UserShow } from "./components/user/UserShow.tsx";
 
 export const App = () => {
   return (
     <Admin 
-      loginPage={LoginPage} authProvider={authProvider} dataProvider={userDataProvider} dataProvider={compositeDataProvider} 
-      darkTheme={houseDarkTheme} theme={houseLightTheme}
+      loginPage={LoginPage} authProvider={authProvider} dataProvider={compositeDataProvider} 
+      layout={Layout}
       >
-      <Resource name={"users"} list={UserList} icon={People}></Resource>
-      <Resource name="users" list={UserList} icon={People} />
+      <Resource name="users" list={UserList} show={UserShow} icon={People} />
       <Resource name="events" list={EventList} icon={Event} />
     </Admin>
   );

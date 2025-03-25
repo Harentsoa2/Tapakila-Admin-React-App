@@ -13,7 +13,7 @@ export const EventList = () => {
 const EventListContent = () => {
   const { data, isLoading } = useListContext();
 
-  if (isLoading) return <div>Chargement en cours...</div>;
+  if (isLoading) return <div style={{background: "transparent"}}>Chargement en cours...</div>;
 
   // filtrer les eevenement par rapport a la date
   const today = new Date();
