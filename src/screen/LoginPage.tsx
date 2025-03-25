@@ -29,13 +29,15 @@ export const LoginPage = () => {
     <Box sx={LoginStyle}>
       <Card>
         <form onSubmit={handleSubmit}>
-          <h1 style={{ marginBottom: "0.5rem", color: "rgb(252, 24, 100)" }}>Se connecter</h1>
+          <h1 style={{ marginBottom: "0.5rem", color: " #0077FF" }}>
+            Se <span style={{color: " #FFBA08"}}>connecter</span>
+          </h1>
           <p style={{ color: " #fff", marginBottom: "1.5rem" }}>
             Veuillez entrer votre email et votre mot de passe
           </p>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <EmailRounded sx={{ color: "action.active", mr: 1}} />
+            <EmailRounded sx={{ color: "action.active", mr: 1 }} />
             <TextField
               id="input-with-sx"
               label="Email"
@@ -44,10 +46,24 @@ export const LoginPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              sx={{
+                "& .MuiInput-underline:before": {
+                  borderBottom: "2px solid #fff",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottom: "2px solid #0077FF",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#fff",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: " #0077FF",
+                },
+              }}
             />
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center"}}>
-            <PasswordRounded sx={{ color: "action.active", mr: 1}} />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <PasswordRounded sx={{ color: "action.active", mr: 1 }} />
             <TextField
               id="input-with-sx"
               label="Mot de passe"
@@ -56,6 +72,20 @@ export const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              sx={{
+                "& .MuiInput-underline:before": {
+                  borderBottom: "2px solid #fff",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottom: "2px solid #FFBA08",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#fff",
+                },
+                "& .MuiInputLabel-root.Mui-focused": {
+                  color: " #FFBA08",
+                },
+              }}
             />
           </Box>
           <Button
@@ -65,13 +95,20 @@ export const LoginPage = () => {
             type="submit"
             sx={{
               marginTop: "1rem",
-              color: "white",
-              backgroundColor: "rgb(252, 24, 100)",
-              "&:hover": { backgroundColor: "#fff", color: "rgb(252, 24, 100)"},
+              color: " #fff",
+              backgroundColor: " #0077FF",
+              "&:hover": {
+                backgroundColor: " #FFBA08",
+                color: " #fff",
+              },
             }}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "connecter"}
+            {loading ? (
+              <CircularProgress size={24} sx={{ color: "white" }} />
+            ) : (
+              "connecter"
+            )}
           </Button>
         </form>
       </Card>
