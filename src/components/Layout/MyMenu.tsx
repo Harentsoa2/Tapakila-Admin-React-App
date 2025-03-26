@@ -1,5 +1,5 @@
 import { Event, People } from "@mui/icons-material";
-import { MenuList } from "@mui/material";
+// import { MenuList } from "@mui/material";
 import { Menu } from "react-admin";
 
 export const MyMenu = () => (
@@ -18,35 +18,33 @@ export const MyMenu = () => (
       },
     }}
   >
-    <MenuList>
-      <Menu.Item
-        to="/users"
-        primaryText="Utilisateur"
-        sx={{
-          background: "#0077FF",
-          margin: "20px 20px",
-          fontWeight: "bold",
-          border: "2px solid #0077FF",
-          borderRadius: "10px",
-          padding: "10px 20px",
-          fontFamily: "Poppins",
-        }}
-        leftIcon={<People />}
-      />
-      <Menu.Item
-        to="/events"
-        primaryText="Evenement"
-        sx={{
-          background: "#0077FF",
-          margin: "20px 20px",
-          fontWeight: "bold",
-          border: "2px solid #0077FF",
-          borderRadius: "10px",
-          padding: "10px 20px",
-          fontFamily: "Poppins",
-        }}
-        leftIcon={<Event />}
-      />
-    </MenuList>
+    <Menu.Item
+      to="/users"
+      primaryText="Utilisateur"
+      sx={{
+        background: "#0077FF",
+        margin: "20px 0",
+        fontWeight: "bold",
+        border: "2px solid #0077FF",
+        borderRadius: "10px",
+        padding: "10px 10px",
+        fontFamily: "Poppins",
+      }}
+      leftIcon={<People />}
+    />
+    <Menu.Item
+      to="/events"
+      primaryText="Evenement"
+      sx={{
+        background: "#0077FF",
+        margin: "10px 0",
+        fontWeight: "bold",
+        border: "2px solid #0077FF",
+        borderRadius: "10px",
+        padding: "10px 10px",
+        fontFamily: "Poppins",
+      }}
+      leftIcon={<Event />}
+    />
   </Menu>
 );

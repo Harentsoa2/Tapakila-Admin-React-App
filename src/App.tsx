@@ -13,6 +13,11 @@ export const App = () => {
     <Admin 
       loginPage={LoginPage} authProvider={authProvider} dataProvider={compositeDataProvider} 
       layout={Layout}
+      sx={{
+        '& .RaSidebar-drawer': {
+            display: 'none'
+        }
+    }}
       >
       <Resource name="users" list={UserList} show={UserShow} icon={People} />
       <Resource name="events" list={EventList} icon={Event} />
