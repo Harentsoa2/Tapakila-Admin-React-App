@@ -10,15 +10,17 @@ import { UserShow } from "./components/user/UserShow.tsx";
 
 export const App = () => {
   return (
-    <Admin 
-      loginPage={LoginPage} authProvider={authProvider} dataProvider={compositeDataProvider} 
+    <Admin
+      loginPage={LoginPage}
+      authProvider={authProvider}
+      dataProvider={compositeDataProvider}
       layout={Layout}
       sx={{
-        '& .RaSidebar-drawer': {
-            display: 'none'
-        }
-    }}
-      >
+        "& .RaSidebar-drawer": {
+          display: "none",
+        },
+      }}
+    >
       <Resource name="users" list={UserList} show={UserShow} icon={People} />
       <Resource name="events" list={EventList} icon={Event} />
     </Admin>
