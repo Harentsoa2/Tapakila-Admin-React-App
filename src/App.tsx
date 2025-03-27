@@ -2,7 +2,7 @@ import { Admin, Resource } from "react-admin";
 import { authProvider } from "./auth/auth-provider.ts";
 import { LoginPage } from "./screen/LoginPage.tsx";
 import { UserList } from "./components/user/UserList.tsx";
-import { EventList } from "./components/Events/EventsList.tsx";
+import { EventList } from "./components/events/EventsList.tsx";
 import { People, Event } from "@mui/icons-material";
 import { compositeDataProvider } from "./data/compositeDataProvider.ts";
 import { Layout } from "./Layout.tsx";
