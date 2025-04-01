@@ -22,10 +22,10 @@ export const UserShow = () => {
       }}
     >
       <TabbedShowLayout sx={{ padding: "40px" }}>
-        <TabbedShowLayout.Tab label="Profil">
+        <TabbedShowLayout.Tab label="Profil" sx={{fontFamily: "Poppins"}} >
           <WithRecord render={(record) => <MyProfil record={record} />} />
         </TabbedShowLayout.Tab>
-        <TabbedShowLayout.Tab label={"Tickets"}>
+        <TabbedShowLayout.Tab label={"Tickets"} sx={{fontFamily: "Poppins"}}>
           <TicketUser />
         </TabbedShowLayout.Tab>
       </TabbedShowLayout>
