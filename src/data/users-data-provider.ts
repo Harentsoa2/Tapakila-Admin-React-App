@@ -1,6 +1,7 @@
 import { DataProvider, fetchUtils } from "react-admin";
 
 const url = "http://localhost:3000/api";
+// const url = "http://localhost:3000/api/users?page=?&pageSize";
 const httpClient = fetchUtils.fetchJson;
 
 export const userDataProvider: DataProvider = {
