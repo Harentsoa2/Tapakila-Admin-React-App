@@ -17,8 +17,8 @@ export default function MyProfil({ record }: { record: any }) {
           src={record.user_image}
           aria-label="Profil"
           sx={{
-            width: 80,
-            height: 80,
+            width: 200,
+            height: 200,
             border: "3px solid #FFBA08",
             backgroundColor: "#0077FF",
             color: "white",
