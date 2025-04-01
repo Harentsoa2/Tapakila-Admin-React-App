@@ -1,5 +1,6 @@
 import {
   ArrayField,
+  BulkDeleteButton,
   ChipField,
   Datagrid,
   FunctionField,
@@ -10,7 +11,9 @@ import {
 import { Avatar, Typography } from "@mui/material";
 
 const CustomEmpty = () => (
-  <Typography>Cette utilisateur n'a pas encore acheter des tickets</Typography>
+  <Typography sx={{ fontFamily: "Poppins", padding: "20px 0", color: "red" }}>
+    Cette utilisateur n'a pas encore acheter des tickets
+  </Typography>
 );
 
 const TypeTicket = ({ ticketType }: { ticketType: string }) => {
@@ -69,6 +72,9 @@ export default function TicketUser() {
           "& .column-ticket_id": {
             padding: "20px 10px",
           },
+          "& .column-ticket_status": {
+            padding: "0 10px",
+          },
           "& .RaDatagrid-row": {
             "&:hover": {
               backgroundColor: "rgba(0, 119, 255, 0.05)",
@@ -94,13 +100,37 @@ export default function TicketUser() {
             <TypeTicket ticketType={record.ticket_type} />
           )}
         />
-        <ChipField label="Status" source="ticket_status" />
+        <ChipField
+          label="Status"
+          source="ticket_status"
+          sx={{ background: "green", fontFamily: "Poppins" }}
+        />
         <NumberField
           source="ticket_price"
-          label="Prix"
+          label="Prix (Ar)"
           sx={{ fontFamily: "Poppins" }}
         />
-        <ReferenceField reference="events" source="event_id" />
+        <ReferenceField
+          reference="events"
+          label={"Evenement"}
+          source="event_id"
+          link={"/events"}
+          sx={{
+            "& .RaReferenceField-link": {
+              fontPalette: "#0077FF",
+              paddingLeft: "20px",
+            },
+          }}
+        >
+          <TextField
+            source="event_name"
+            sx={{
+              fontFamily: "Poppins",
+              fontSize: "1.1rem",
+            }}
+          />
+        </ReferenceField>
+        <BulkDeleteButton label="supprimer" />
       </Datagrid>
     </ArrayField>
   );
