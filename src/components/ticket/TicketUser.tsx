@@ -1,20 +1,29 @@
 import {
   ArrayField,
-  BulkDeleteButton,
+  Button,
   ChipField,
   Datagrid,
   FunctionField,
   NumberField,
   ReferenceField,
   TextField,
+  WithRecord,
 } from "react-admin";
 import { Avatar, Typography } from "@mui/material";
+
+// {
+//   id_user: null, ticket_status: "AVAILABLE"
+// }
 
 const CustomEmpty = () => (
   <Typography sx={{ fontFamily: "Poppins", padding: "20px 0", color: "red" }}>
     Cette utilisateur n'a pas encore acheter des tickets
   </Typography>
 );
+
+const DeleteTicketUser = ({idTicket} : {idTicket: string}) => {
+  console.log(idTicket);
+}
 
 const TypeTicket = ({ ticketType }: { ticketType: string }) => {
   switch (ticketType) {
@@ -130,7 +139,7 @@ export default function TicketUser() {
             }}
           />
         </ReferenceField>
-        <BulkDeleteButton label="supprimer" />
+        <WithRecord render={(record: any) => (<Button label="supprimer" onClick={() => DeleteTicketUser(record.ticket_id)} />) } />
       </Datagrid>
     </ArrayField>
   );
