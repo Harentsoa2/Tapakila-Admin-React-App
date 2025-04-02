@@ -1,4 +1,4 @@
-import { Admin, Resource } from "react-admin";
+import { Admin, ListGuesser, Resource, ShowGuesser } from "react-admin";
 import { authProvider } from "./auth/auth-provider.ts";
 import { LoginPage } from "./screen/LoginPage.tsx";
 import { UserList } from "./components/user/UserList.tsx";
@@ -11,8 +11,8 @@ import { UserShow } from "./components/user/UserShow.tsx";
 export const App = () => {
   return (
     <Admin
-      loginPage={LoginPage}
-      authProvider={authProvider}
+    //  loginPage={LoginPage}
+     // authProvider={authProvider}
       dataProvider={compositeDataProvider}
       layout={Layout}
       sx={{
@@ -22,7 +22,9 @@ export const App = () => {
       }}
     >
       <Resource name="users" list={UserList} show={UserShow} icon={People} />
-      <Resource name="events" list={EventList} icon={Event} />
+      <Resource name="events" list={EventList} icon={Event} show={ShowGuesser}/>
+      
+
     </Admin>
   );
 };
