@@ -1,5 +1,6 @@
 import { userDataProvider } from "./users-data-provider.ts";
 import { eventsDataProvider } from "./events-data-provider.ts";
+import { contactDataProvider } from "./contact-data-provider.ts";
 
 const compositeDataProvider = {
   getList: async (resource: any, params: any) => {
@@ -7,6 +8,8 @@ const compositeDataProvider = {
       return userDataProvider.getList(resource, params);
     } else if (resource === "events") {
       return eventsDataProvider.getList(resource, params);
+    } else if (resource === "contact") {
+      return contactDataProvider.getList(resource, params);
     }
     throw new Error(`Unknown resource: ${resource}`);
   },
@@ -52,6 +55,8 @@ const compositeDataProvider = {
       return userDataProvider.delete(resource, params);
     } else if (resource === "events") {
       return eventsDataProvider.delete(resource, params);
+    } else if (resource === "contact") {
+      return contactDataProvider.delete(resource, params);
     }
     throw new Error(`Unknown resource: ${resource}`);
   },
