@@ -1,21 +1,36 @@
-import { List, useListContext } from "react-admin";
+import { List, useListContext, TopToolbar, CreateButton } from "react-admin";
 import { Grid, Typography, Box } from "@mui/material";
 import { EventCard } from "./EventCard";
 
+const ListActions = () => (
+    <TopToolbar>
+        <CreateButton />
+    </TopToolbar>
+);
+
 export const EventList = () => {
   return (
-    <List>
+    <List 
+      actions={<ListActions />}
+      sort={{ field: 'event_date', order: 'DESC' }}
+      perPage={25}
+    >
       <EventListContent />
     </List>
   );
 };
 
 const EventListContent = () => {
-  const { data, isLoading } = useListContext();
+  const { data = [], isLoading } = useListContext();
 
-  if (isLoading) return <div style={{background: "transparent"}}>Chargement en cours...</div>;
+  if (isLoading) {
+    return (
+      <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
+        <Typography>Chargement en cours...</Typography>
+      </Box>
+    );
+  }
 
-  // filtrer les eevenement par rapport a la date
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -30,12 +45,11 @@ const EventListContent = () => {
   });
 
   return (
-    <Box sx={{ padding: 2 }}>
-
-
-      <Typography variant="h5" sx={{ marginTop: 3, marginBottom: 2, color: '#2e7d32' }}>
-        Événements à venir
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h5" sx={{ mb: 3, color: '#2e7d32', fontWeight: 'bold' }}>
+        Événements à venir ({upcomingEvents.length})
       </Typography>
+      
       {upcomingEvents.length > 0 ? (
         <Grid container spacing={2}>
           {upcomingEvents.map((event) => (
@@ -45,28 +59,24 @@ const EventListContent = () => {
           ))}
         </Grid>
       ) : (
-        <Typography variant="body1" sx={{ marginBottom: 3 }}>
+        <Typography variant="body1" sx={{ mb: 3 }}>
           Aucun événement à venir pour le moment.
         </Typography>
       )}
 
-
-
-      <Typography variant="h5" sx={{ marginTop: 5, marginBottom: 2, color: '#757575' }}>
-        Événements passés
-      </Typography>
-      {pastEvents.length > 0 ? (
-        <Grid container spacing={2}>
-          {pastEvents.map((event) => (
-            <Grid item key={event.id} xs={12} sm={6} md={4} lg={3}>
-              <EventCard event={event} isPastEvent={true} />
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Typography variant="body1">
-          Aucun événement passé à afficher.
-        </Typography>
+      {pastEvents.length > 0 && (
+        <>
+          <Typography variant="h5" sx={{ mt: 4, mb: 3, color: '#757575', fontWeight: 'bold' }}>
+            Événements passés ({pastEvents.length})
+          </Typography>
+          <Grid container spacing={2}>
+            {pastEvents.map((event) => (
+              <Grid item key={event.id} xs={12} sm={6} md={4} lg={3}>
+                <EventCard event={event} isPastEvent />
+              </Grid>
+            ))}
+          </Grid>
+        </>
       )}
     </Box>
   );
