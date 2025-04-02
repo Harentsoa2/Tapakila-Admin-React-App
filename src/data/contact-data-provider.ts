@@ -16,6 +16,18 @@ export const contactDataProvider = {
     };
   },
 
+  getOne: async (params: any) => {
+    const { json } = await httpClient(`${url}/${params.id}`);
+
+    return {
+      data: json.map((message: any) => ({
+        id: message.message_id,
+        ...message,
+      })),
+      total: json.length,
+    };
+  },
+
   delete: async (params: any) => {
     const { json } = await httpClient(`${url}/${params.id}`, {
       method: "DELETE",
