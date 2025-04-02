@@ -8,6 +8,7 @@ import { compositeDataProvider } from "./data/compositeDataProvider.ts";
 import { Layout } from "./Layout.tsx";
 import { UserShow } from "./components/user/UserShow.tsx";
 import MessageList from "./components/message/MessageList.tsx";
+import { EventShow } from "./components/events/EventShow"; // Ajoutez cet import
 
 export const App = () => {
   return (
@@ -23,7 +24,7 @@ export const App = () => {
       }}
     >
       <Resource name="users" list={UserList} show={UserShow} icon={People} />
-      <Resource name="events" list={EventList} icon={Event} />
+      <Resource name="events" list={EventList} show={EventShow} icon={Event} /> {/* Ajoutez show ici */}
       <Resource name="contact" list={MessageList} icon={Message} />
     </Admin>
   );

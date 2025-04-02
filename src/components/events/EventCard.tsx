@@ -1,232 +1,90 @@
-import { useState } from 'react';
-import { Card, CardContent, CardMedia, Typography, Button, Box, Modal, IconButton } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardMedia, Typography, Button, Box } from "@mui/material";
 import { motion } from "framer-motion";
-import { CalendarToday, LocationOn, Person, Category, Close } from "@mui/icons-material";
 
 export const EventCard = ({ event, isPastEvent = false }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
 
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        whileHover={{ scale: 1.05 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ scale: 1.03 }}
+    >
+      <Card
+        sx={{
+          maxWidth: 300,
+          margin: 2,
+          boxShadow: 2,
+          borderRadius: '12px',
+          overflow: "hidden",
+          transition: "all 0.3s",
+          backgroundColor: 'transparent',
+          position: 'relative',
+          border: '1px solid rgba(0, 0, 0, 0.12)',
+          "&:hover": {
+            boxShadow: 4,
+          },
+        }}
       >
-        <Card
+        <CardMedia
+          component="img"
+          height="160"
+          image={event.event_image}
+          alt={event.event_name}
           sx={{
-            maxWidth: 360,
-            margin: 2,
-            boxShadow: 3,
-            borderRadius: 1,
-            overflow: "hidden",
-            transition: "transform 0.3s, box-shadow 0.3s",
-            backgroundColor: isPastEvent ? "#f5f5f5" : "#ffffff",
-            position: 'relative',
-            "&:hover": {
-              boxShadow: 6,
-            },
+            objectFit: "cover",
+            filter: isPastEvent ? 'grayscale(80%)' : 'none',
+            opacity: isPastEvent ? 0.6 : 1,
           }}
-        >
-          {isPastEvent && (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                color: 'white',
-                padding: '4px 8px',
-                borderRadius: '4px',
-                fontSize: '12px',
-                fontWeight: 'bold',
-              }}
-            >
-              PASSÉ
-            </Box>
-          )}
+        />
 
-          <CardMedia
-            component="img"
-            height="200"
-            image={event.event_image}
-            alt={event.event_name}
+        <CardContent sx={{ padding: '16px !important' }}>
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="div"
             sx={{
-              objectFit: "cover",
-              filter: isPastEvent ? 'grayscale(30%)' : 'none',
-              opacity: isPastEvent ? 0.8 : 1,
-            }}
-          />
-
-          <CardContent>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-              sx={{
-                fontWeight: "bold",
-                color: isPastEvent ? "#757575" : "#2e7d32",
-                textAlign: "center",
-                mb: 2,
-              }}
-            >
-              {event.event_name}
-            </Typography>
-
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                variant="contained"
-                onClick={handleOpen}
-                sx={{
-                  backgroundColor: isPastEvent ? "#757575" : "#2e7d32",
-                  color: "#fff",
-                  borderRadius: 1,
-                  textTransform: "none",
-                  fontWeight: "bold",
-                  "&:hover": {
-                    backgroundColor: isPastEvent ? "#616161" : "#1b5e20",
-                  },
-                }}
-              >
-                Voir les détails
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* section pour les evelements cliqué  */}
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: { xs: '90%', sm: '80%', md: '60%' },
-          maxHeight: '90vh',
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-          borderRadius: 1,
-          overflowY: 'auto',
-        }}>
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
+              fontWeight: 600,
+              color: isPastEvent ? "text.secondary" : "primary.main",
+              textAlign: "center",
+              mb: 2,
+              fontSize: '1.1rem',
+              lineHeight: 1.3,
+              minHeight: '3.2em',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden'
             }}
           >
-            <Close />
-          </IconButton>
-
-          <Typography id="modal-modal-title" variant="h4" component="h2" sx={{ mb: 3, color: isPastEvent ? "#757575" : "#2e7d32" }}>
             {event.event_name}
           </Typography>
 
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4 }}>
-            <Box sx={{ flex: 1 }}>
-              <CardMedia
-                component="img"
-                height="300"
-                image={event.event_image}
-                alt={event.event_name}
-                sx={{
-                  objectFit: "cover",
-                  borderRadius: 1,
-                  mb: 2,
-                }}
-              />
-            </Box>
-
-            <Box sx={{ flex: 2 }}>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Description</Typography>
-              <Typography paragraph sx={{ mb: 3 }}>{event.event_description}</Typography>
-
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <LocationOn fontSize="small" sx={{ color: "#d32f2f" }} />
-                  <Box>
-                    <Typography variant="subtitle2">Lieu</Typography>
-                    <Typography variant="body1">{event.event_place}</Typography>
-                  </Box>
-                </Box>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CalendarToday fontSize="small" sx={{ color: "#1976d2" }} />
-                  <Box>
-                    <Typography variant="subtitle2">Date</Typography>
-                    <Typography variant="body1">
-                      {new Date(event.event_date).toLocaleDateString('fr-FR', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </Typography>
-                  </Box>
-                </Box>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Person fontSize="small" sx={{ color: "#ffa000" }} />
-                  <Box>
-                    <Typography variant="subtitle2">Organisateur</Typography>
-                    <Typography variant="body1">{event.event_organizer}</Typography>
-                  </Box>
-                </Box>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Category fontSize="small" sx={{ color: "#7b1fa2" }} />
-                  <Box>
-                    <Typography variant="subtitle2">Catégorie</Typography>
-                    <Typography variant="body1">{event.event_category}</Typography>
-                  </Box>
-                </Box>
-              </Box>
-
-              {event.additional_info && (
-                <>
-                  <Typography variant="h6" sx={{ mt: 3, mb: 2, fontWeight: 'bold' }}>Informations supplémentaires</Typography>
-                  <Typography paragraph>{event.additional_info}</Typography>
-                </>
-              )}
-            </Box>
-          </Box>
-
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
-              variant="contained"
+              variant="outlined"
+              size="small"
+              onClick={() => navigate(`/events/${event.id}/show`)} // Redirection directe
               sx={{
-                backgroundColor: "#2e7d32",
-                color: "#fff",
-                borderRadius: 1,
+                borderColor: isPastEvent ? "text.secondary" : "primary.main",
+                color: isPastEvent ? "text.secondary" : "primary.main",
+                borderRadius: '20px',
                 textTransform: "none",
-                fontWeight: "bold",
+                fontWeight: 500,
+                px: 3,
                 "&:hover": {
-                  backgroundColor: "#1b5e20",
+                  backgroundColor: isPastEvent ? 'rgba(0, 0, 0, 0.04)' : 'rgba(46, 125, 50, 0.08)',
+                  borderColor: isPastEvent ? "text.secondary" : "primary.main",
                 },
               }}
-              disabled={isPastEvent}
             >
-              {isPastEvent ? "Événement terminé" : "Tickets disponibles"}
+              Voir détails
             </Button>
           </Box>
-        </Box>
-      </Modal>
-    </>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 };
