@@ -1,9 +1,8 @@
 import { Typography } from "@mui/material";
 import {
+  ArrayField,
   Datagrid,
   DateField,
-  DeleteButton,
-  List,
   RichTextField,
   TextField,
 } from "react-admin";
@@ -26,11 +25,12 @@ const MyExpand = () => {
 
 export default function MessageUser() {
   return (
-    <List resource="contact" pagination={false} exporter={false} empty={<CustomEmpty />}>
+    <ArrayField source="messages">
       <Datagrid
         bulkActionButtons={false}
         expand={<MyExpand />}
         expandSingle
+        empty={<CustomEmpty />}
         rowClick={false}
         sx={{
           "& .RaDatagrid-headerCell": {
@@ -70,17 +70,7 @@ export default function MessageUser() {
           showTime
           sx={{ color: "#0077FF", fontFamily: "Poppins", fontSize: "1rem" }}
         />
-        <DeleteButton
-          label="Supprimer"
-          redirect={false}
-          sx={{
-            "&.RaDeleteButton-root": {
-              color: "#ff4444",
-              fontFamily: "Poppins",
-            },
-          }}
-        />
       </Datagrid>
-    </List>
+    </ArrayField>
   );
 }
