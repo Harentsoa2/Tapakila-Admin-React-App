@@ -13,9 +13,10 @@ export const EventList = () => {
 const EventListContent = () => {
   const { data, isLoading } = useListContext();
 
-  if (isLoading) return <div style={{background: "transparent"}}>Chargement en cours...</div>;
+  if (isLoading)
+    return <div style={{ background: "transparent" }}>Chargement en cours...</div>;
 
-  // filtrer les eevenement par rapport a la date
+  // Filtrer les evmnents par rapport a la date
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -30,9 +31,7 @@ const EventListContent = () => {
   });
 
   return (
-    <Box sx={{ padding: 2 }}>
-
-
+    <Box sx={{ padding: 2, backgroundColor: "rgba(255, 255, 255, 0.1)", borderRadius: 2 }}>
       <Typography variant="h5" sx={{ marginTop: 3, marginBottom: 2, color: '#2e7d32' }}>
         Événements à venir
       </Typography>
@@ -49,8 +48,6 @@ const EventListContent = () => {
           Aucun événement à venir pour le moment.
         </Typography>
       )}
-
-
 
       <Typography variant="h5" sx={{ marginTop: 5, marginBottom: 2, color: '#757575' }}>
         Événements passés

@@ -1,18 +1,20 @@
-import { DataProvider, fetchUtils } from "react-admin";
+import { fetchUtils } from "react-admin";
 
-const url = "http://localhost:3000/api";
+const url = "http://localhost:3000/api/users";
 const httpClient = fetchUtils.fetchJson;
 
-export const userDataProvider: DataProvider = {
-  getList: (resource) => httpClient(`${url}/${resource}`).then(({ json }) => ({ 
-    data: json.map((item: any) => ({
-      id: item.user_id, ...item,}
-    )),
-    total: json.length,
-  })),
+export const userDataProvider = {
+  getList: async () => {
+    const { json } = await httpClient(url);
 
-  getOne: (resource, params) =>
-    httpClient(`${url}/${resource}/${params.id}`).then(({ json }) => ({
-        data: { ...json, id: json.user_id }
-    })),
+    return {
+      data: json.map((user: any) => ({ id: user.user_id, ...user })),
+      total: json.length,
+    };
+  },
+
+  getOne: async (params: any) => {
+    const { json } = await httpClient(`${url}/${params.id}`);
+    return { data: { id: json.event_id, ...json } };
+  },
 };

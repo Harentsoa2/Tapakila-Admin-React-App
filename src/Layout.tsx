@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { Layout as RALayout, CheckForApplicationUpdate } from "react-admin";
-import MyAppBar from "./components/layout/MyAppBar";
-import { MyMenu } from "./components/layout/MyMenu";
+import MyAppBar from "./components/Layout/MyAppBar";
+import { MyMenu } from "./components/Layout/MyMenu";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
