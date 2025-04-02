@@ -14,7 +14,7 @@ const CustomEmpty = () => (
 );
 
 const MyExpand = () => {
-  return <RichTextField source="message_content" />;
+  return <RichTextField source="message_content" stripTags sx={{ fontFamily: "Poppins", fontSize: "1rem", textAlign: "center" }} />;
 };
 
 export default function MessageUser() {
@@ -24,10 +24,28 @@ export default function MessageUser() {
         bulkActionButtons={false}
         empty={<CustomEmpty />}
         expand={<MyExpand />}
+        expandSingle
+        rowClick={false}
+        sx={{
+          "& .RaDatagrid-headerCell": {
+            fontWeight: "bold",
+            color: "#FFBA08",
+          },
+          "& .column-message_subject": {
+            padding: "20px 10px",
+          },
+          "& .RaDatagrid-row": {
+            "&:hover": {
+              backgroundColor: "rgba(0, 119, 255, 0.05)",
+            },
+            "&:nth-of-type(even)": {
+              backgroundColor: "rgba(255, 186, 8, 0.05)",
+            },
+          },
+        }}
       >
-        {/* <RichTextField source="message_content" />  */}
-        <TextField source="message_id" label="ID" />
-        <TextField source="message_subject" label="Titre" />
+        <TextField source="message_id" label="ID" sx={{ color: "#0077FF", fontFamily: "Poppins", fontSize: "1rem" }} />
+        <TextField source="message_subject" label="Titre" sx={{ fontFamily: "Poppins", fontSize: "1rem", textTransform: "uppercase" }} />
         <DateField
           source="message_date"
           label="Date de création"
