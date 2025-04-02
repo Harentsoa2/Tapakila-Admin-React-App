@@ -1,8 +1,9 @@
 import { Typography } from "@mui/material";
 import {
-  ArrayField,
   Datagrid,
   DateField,
+  DeleteButton,
+  List,
   RichTextField,
   TextField,
 } from "react-admin";
@@ -14,15 +15,20 @@ const CustomEmpty = () => (
 );
 
 const MyExpand = () => {
-  return <RichTextField source="message_content" stripTags sx={{ fontFamily: "Poppins", fontSize: "1rem", textAlign: "center" }} />;
+  return (
+    <RichTextField
+      source="message_content"
+      stripTags
+      sx={{ fontFamily: "Poppins", fontSize: "1rem", textAlign: "center" }}
+    />
+  );
 };
 
 export default function MessageUser() {
   return (
-    <ArrayField source="messages" label="">
+    <List resource="contact" pagination={false} exporter={false} empty={<CustomEmpty />}>
       <Datagrid
         bulkActionButtons={false}
-        empty={<CustomEmpty />}
         expand={<MyExpand />}
         expandSingle
         rowClick={false}
@@ -44,15 +50,37 @@ export default function MessageUser() {
           },
         }}
       >
-        <TextField source="message_id" label="ID" sx={{ color: "#0077FF", fontFamily: "Poppins", fontSize: "1rem" }} />
-        <TextField source="message_subject" label="Titre" sx={{ fontFamily: "Poppins", fontSize: "1rem", textTransform: "uppercase" }} />
+        <TextField
+          source="message_id"
+          label="ID"
+          sx={{ color: "#0077FF", fontFamily: "Poppins", fontSize: "1rem" }}
+        />
+        <TextField
+          source="message_subject"
+          label="Titre"
+          sx={{
+            fontFamily: "Poppins",
+            fontSize: "1rem",
+            textTransform: "uppercase",
+          }}
+        />
         <DateField
           source="message_date"
           label="Date de création"
           showTime
           sx={{ color: "#0077FF", fontFamily: "Poppins", fontSize: "1rem" }}
         />
+        <DeleteButton
+          label="Supprimer"
+          redirect={false}
+          sx={{
+            "&.RaDeleteButton-root": {
+              color: "#ff4444",
+              fontFamily: "Poppins",
+            },
+          }}
+        />
       </Datagrid>
-    </ArrayField>
+    </List>
   );
 }
