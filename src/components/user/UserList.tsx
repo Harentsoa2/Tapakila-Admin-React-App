@@ -60,7 +60,7 @@ export const UserList = () => {
         <TextField
           source="user_id"
           label="ID"
-          sx={{fontWeight: "italic"}}
+          sx={{fontWeight: "italic", fontFamily: "Poppins"}}
         />
         <TextField
           source="user_name"
