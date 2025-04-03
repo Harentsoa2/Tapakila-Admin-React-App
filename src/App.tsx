@@ -12,7 +12,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import { EventList } from "./components/events/EventsList.tsx";
 import { EventShow } from "./components/events/EventShow";
-import { EventCreate } from "./components/events/EventCreate";
+import EventCreate from './components/events/EventCreate';
 
 
 const theme = createTheme({

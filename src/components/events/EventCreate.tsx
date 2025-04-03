@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Create,
   SimpleForm,
@@ -11,26 +12,26 @@ import {
   DateInput,
   TimeInput,
   Toolbar,
-  SaveButton
+  SaveButton,
+  ImageInput,
+  ImageField
 } from "react-admin";
-import { Typography, Box, Alert, CircularProgress, Stack } from "@mui/material";
-import { useState } from 'react';
+import {
+  Box,
+  Alert,
+  CircularProgress,
+  Stack,
+  Card,
+  CardContent,
+  Divider,
+  Typography,
+  useTheme
+} from "@mui/material";
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import { lighten } from '@mui/system';
 
-const CustomToolbar = (props) => (
-  <Toolbar {...props}>
-    <SaveButton
-      sx={{
-        backgroundColor: '#1e88e5',
-        color: 'white',
-        '&:hover': {
-          backgroundColor: '#1565c0',
-        }
-      }}
-    />
-  </Toolbar>
-);
-
-export const EventCreate = () => {
+const EventCreate = () => {
+  const theme = useTheme();
   const notify = useNotify();
   const redirect = useRedirect();
   const [create] = useCreate();
@@ -42,203 +43,230 @@ export const EventCreate = () => {
       setLoading(true);
       setError(null);
 
-      if (data.event_image_url) {
-        try {
-          new URL(data.event_image_url);
-        } catch {
-          throw new Error("L'URL de l'image n'est pas valide");
-        }
+      const requiredFields = ['event_name', 'event_description', 'event_place', 'event_date'];
+      const missingFields = requiredFields.filter(field => !data[field]);
+
+      if (missingFields.length > 0) {
+        throw new Error(`Champs obligatoires manquants: ${missingFields.join(', ')}`);
       }
 
 
       const eventDate = new Date(data.event_date);
-      const [hours, minutes] = data.event_time.split(':');
-      eventDate.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+      if (data.event_time) {
+        const [hours, minutes] = data.event_time.split(':');
+        eventDate.setHours(parseInt(hours, 10));
+        eventDate.setMinutes(parseInt(minutes, 10));
+      }
 
-      const transformedData = {
-        ...data,
-        event_image: data.event_image_url,
-        event_date: eventDate.toISOString(),
-        event_creation_date: new Date().toISOString()
-      };
 
-      await create('events', { data: transformedData }, {
+      await create('events', {
+        data: {
+          ...data,
+          event_date: eventDate.toISOString(),
+          event_image: data.event_image_url || null
+        }
+      }, {
         onSuccess: () => {
           notify('Événement créé avec succès', { type: 'success' });
           redirect('list');
         },
         onError: (error) => {
-          setError(error.message || 'Erreur lors de la création');
-          notify('Erreur lors de la création', { type: 'error' });
+          console.error("Erreur complète:", error);
+          setError(error.message);
+          notify(error.message, { type: 'error' });
         }
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur inconnue');
-      notify(err instanceof Error ? err.message : 'Erreur inconnue', { type: 'error' });
+      setError(err.message);
+      notify(err.message, { type: 'error' });
     } finally {
       setLoading(false);
     }
   };
 
-  const styles = {
-    sectionBox: {
-      p: 3,
-      mb: 3,
-      bgcolor: '#f8fafc',
-      borderRadius: 2,
-      borderLeft: '4px solid #1e88e5',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-    },
-    sectionTitle: {
-      mb: 2,
-      color: '#1e88e5',
-      fontWeight: 'bold',
-      borderBottom: '2px solid #ffeb3b',
-      pb: 1
-    },
-    input: {
-      '& .MuiInputBase-root': {
-        backgroundColor: '#ffffff',
-        color: '#000000',
-        '&:hover': {
-          backgroundColor: '#f5f5f5'
-        }
-      },
-      '& .MuiInputLabel-root': {
-        color: '#1e88e5'
-      },
-      '& .MuiFilledInput-underline:before': {
-        borderBottomColor: '#1e88e5'
-      },
-      '& .MuiFilledInput-underline:after': {
-        borderBottomColor: '#ffeb3b'
-      },
-      '& .MuiSelect-select': {
-        color: '#000000'
-      }
-    },
-    alert: {
-      mb: 2,
-      backgroundColor: '#fff8e1',
-      color: '#5d4037'
-    }
-  };
-
   return (
-    <Create title="Créer un nouvel événement" sx={{ bgcolor: '#f5f7fa' }}>
+    <Create
+      title={
+        <Box display="flex" alignItems="center">
+          <EventAvailableIcon sx={{
+            color: theme.palette.secondary.main,
+            mr: 1,
+            fontSize: '2rem'
+          }} />
+          <Typography variant="h5" component="h1" sx={{
+            color: theme.palette.primary.contrastText,
+            fontWeight: 600
+          }}>
+            Créer un nouvel événement
+          </Typography>
+        </Box>
+      }
+      sx={{
+        '& .RaCreate-card': {
+          backgroundColor: lighten(theme.palette.primary.dark, 0.1),
+          border: `1px solid ${theme.palette.secondary.main}`,
+          borderRadius: '12px',
+          boxShadow: `0 4px 20px ${theme.palette.secondary.dark}33`
+        }
+      }}
+    >
       <SimpleForm
         onSubmit={handleSubmit}
-        defaultValues={{
-          event_status: "UPLOADED",
-          event_tickets_limit_by_user_by_type: 5,
-          event_date: new Date(),
-          event_time: '12:00',
-          event_image_url: ''
-        }}
-        sanitizeEmptyValues
-        toolbar={<CustomToolbar />}
+        toolbar={
+          <Toolbar sx={{ justifyContent: 'flex-end' }}>
+            <SaveButton
+              label="Publier l'événement"
+              sx={{
+                backgroundColor: theme.palette.secondary.main,
+                color: theme.palette.getContrastText(theme.palette.secondary.main),
+                '&:hover': {
+                  backgroundColor: theme.palette.secondary.dark
+                }
+              }}
+            />
+          </Toolbar>
+        }
       >
+        <Card sx={{
+          mb: 3,
+          backgroundColor: lighten(theme.palette.primary.dark, 0.15),
+          borderLeft: `4px solid ${theme.palette.secondary.main}`
+        }}>
+          <CardContent>
+            {error && (
+              <Alert severity="error" sx={{ mb: 3 }}>
+                {error}
+              </Alert>
+            )}
+
+            <Typography variant="h6" gutterBottom sx={{
+              color: theme.palette.secondary.main,
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+              Informations de base
+            </Typography>
+
+            <TextInput
+              source="event_name"
+              label="Nom de l'événement"
+              validate={required()}
+              fullWidth
+              sx={{
+                '& .MuiInputLabel-root': { color: theme.palette.secondary.light },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: theme.palette.secondary.dark }
+                }
+              }}
+            />
+
+            <TextInput
+              source="event_description"
+              label="Description"
+              multiline
+              rows={4}
+              validate={required()}
+              sx={{ mt: 2 }}
+            />
+
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 2 }}>
+              <DateInput
+                source="event_date"
+                label="Date"
+                validate={required()}
+                sx={{ flex: 1 }}
+              />
+              <TimeInput
+                source="event_time"
+                label="Heure"
+                validate={required()}
+                sx={{ flex: 1 }}
+              />
+            </Stack>
+
+            <TextInput
+              source="event_place"
+              label="Lieu"
+              validate={required()}
+              sx={{ mt: 2 }}
+            />
+          </CardContent>
+        </Card>
+
+        <Card sx={{
+          mb: 3,
+          backgroundColor: lighten(theme.palette.primary.dark, 0.15),
+          borderLeft: `4px solid ${theme.palette.secondary.main}`
+        }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom sx={{
+              color: theme.palette.secondary.main,
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+              Visuel et configuration
+            </Typography>
+
+            <ImageInput
+              source="event_image"
+              label="Image de l'événement"
+              accept="image/*"
+              sx={{
+                mt: 1,
+                '& .MuiDropzoneArea-root': {
+                  backgroundColor: lighten(theme.palette.primary.dark, 0.2),
+                  borderColor: theme.palette.secondary.dark
+                }
+              }}
+            >
+              <ImageField
+                source="src"
+                sx={{
+                  '& img': {
+                    maxHeight: 200,
+                    objectFit: 'contain'
+                  }
+                }}
+              />
+            </ImageInput>
+
+            <TextInput
+              source="event_image_url"
+              label="Ou URL de l'image"
+              helperText="URL complète vers l'image"
+              sx={{ mt: 2 }}
+            />
+
+            <SelectInput
+              source="event_status"
+              label="Statut"
+              choices={[
+                { id: 'DRAFT', name: 'Brouillon' },
+                { id: 'PUBLISHED', name: 'Publié' },
+                { id: 'UPLOADED', name: 'Uploadé' }
+              ]}
+              defaultValue="PUBLISHED"
+              sx={{ mt: 2 }}
+            />
+
+            <NumberInput
+              source="event_tickets_limit_by_user_by_type"
+              label="Limite de tickets par utilisateur"
+              min={1}
+              defaultValue={5}
+              sx={{ mt: 2 }}
+            />
+          </CardContent>
+        </Card>
+
         {loading && (
-          <Box display="flex" justifyContent="center" my={2}>
-            <CircularProgress sx={{ color: '#1e88e5' }} />
+          <Box display="flex" justifyContent="center" mt={2}>
+            <CircularProgress sx={{ color: theme.palette.secondary.main }} />
           </Box>
         )}
-
-        {error && (
-          <Alert severity="error" sx={styles.alert}>
-            {error}
-          </Alert>
-        )}
-
-        <Box sx={styles.sectionBox}>
-          <Typography variant="h6" sx={styles.sectionTitle}>
-            Informations principales
-          </Typography>
-
-          <TextInput
-            source="event_name"
-            label="Nom de l'événement *"
-            fullWidth
-            validate={[required('Ce champ est obligatoire')]}
-            sx={styles.input}
-          />
-
-          <TextInput
-            source="event_description"
-            label="Description *"
-            multiline
-            rows={3}
-            fullWidth
-            validate={[required('Ce champ est obligatoire')]}
-            sx={styles.input}
-          />
-
-          <Stack direction="row" spacing={2}>
-            <DateInput
-              source="event_date"
-              label="Date *"
-              validate={[required('Ce champ est obligatoire')]}
-              fullWidth
-              sx={styles.input}
-            />
-            <TimeInput
-              source="event_time"
-              label="Heure *"
-              validate={[required('Ce champ est obligatoire')]}
-              fullWidth
-              sx={styles.input}
-            />
-          </Stack>
-        </Box>
-
-        <Box sx={styles.sectionBox}>
-          <Typography variant="h6" sx={styles.sectionTitle}>
-            Localisation
-          </Typography>
-          <TextInput
-            source="event_place"
-            label="Lieu *"
-            fullWidth
-            validate={[required('Ce champ est obligatoire')]}
-            sx={styles.input}
-          />
-        </Box>
-
-        <Box sx={styles.sectionBox}>
-          <Typography variant="h6" sx={styles.sectionTitle}>
-            Configuration
-          </Typography>
-          <SelectInput
-            source="event_status"
-            label="Statut"
-            choices={[
-              { id: 'UPLOADED', name: 'Uploadé' },
-              { id: 'DRAFT', name: 'Brouillon' },
-              { id: 'PUBLISHED', name: 'Publié' }
-            ]}
-            sx={styles.input}
-          />
-          <NumberInput
-            source="event_tickets_limit_by_user_by_type"
-            label="Limite de tickets par utilisateur"
-            min={1}
-            sx={styles.input}
-          />
-        </Box>
-
-        <Box sx={styles.sectionBox}>
-          <Typography variant="h6" sx={styles.sectionTitle}>
-            Média
-          </Typography>
-          <TextInput
-            source="event_image_url"
-            label="URL de l'image de l'événement"
-            fullWidth
-            sx={styles.input}
-            helperText="Collez l'URL complète de l'image"
-          />
-        </Box>
       </SimpleForm>
     </Create>
   );
 };
+
+export default EventCreate;

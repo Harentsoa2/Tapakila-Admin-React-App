@@ -149,21 +149,27 @@ export const eventsDataProvider = {
     }
   },
 
-  delete: async (params: any) => {
-    try {
-      const { json } = await httpClient(`${apiUrl}/${params.id}`, {
-        method: "DELETE",
-        headers: new Headers({
-          'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-        }),
-      });
-      return {
-        data: convertResponseDates(json)
-      };
-    } catch (error) {
-      handleApiError(error);
+ delete: async (params: any) => {
+  try {
+    const response = await fetch(`/api/events/${params.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Delete failed');
     }
-  },
+
+    return { data: { id: params.id } };
+  } catch (error) {
+    console.error('Delete error:', error);
+    throw error;
+  }
+},
 
   getManyReference: async (params: any) => {
     try {
