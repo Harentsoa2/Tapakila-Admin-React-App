@@ -13,6 +13,7 @@ interface Event {
     event_status: string;
     available_tickets?: number;
     total_tickets?: number;
+    event_tickets_limit_by_user_by_type?: number;
 }
 
 interface EventParams {
@@ -33,6 +34,8 @@ interface GetTicketsParams {
     eventId: string;
     status?: string;
 }
+
+
 
 enum TicketType {
   VIP = "VIP",
@@ -75,6 +78,32 @@ const eventsDataProvider = {
         } catch (error) {
             console.error('Error fetching tickets:', error);
             return 0;
+        }
+    },
+
+    getPaginatedTickets: async (params: GetPaginatedTicketsParams) => {
+        try {
+            const { eventId, page, perPage, typeFilter, statusFilter } = params;
+            
+            // Construire l'URL avec les paramètres de pagination
+            const queryParams = new URLSearchParams({
+                idEvent: eventId,
+                page: page.toString(),
+                pageSize: perPage.toString(),
+                ...(typeFilter && { type: typeFilter }),
+                ...(statusFilter && { status: statusFilter })
+            });
+            
+            // Appeler l'API avec les paramètres de pagination
+            const { json } = await httpClient(`${ticketsApiUrl}?${queryParams}`);
+            
+            return {
+                data: json.tickets || [],
+                total: json.total || 0
+            };
+        } catch (error) {
+            console.error('Error fetching paginated tickets:', error);
+            return { data: [], total: 0 };
         }
     },
 
@@ -155,16 +184,49 @@ const eventsDataProvider = {
 
     create: async (_resource: string, params: { data: any }) => {
         try {
+            console.log('Données reçues pour création:', params.data);
+            
+            // Vérifier si la date est déjà une chaîne ISO
+            let eventDate;
+            if (typeof params.data.event_date === 'string') {
+                // Essayer de parser la date
+                eventDate = new Date(params.data.event_date);
+                console.log('Date parsée à partir de chaîne:', eventDate);
+            } else if (params.data.event_date instanceof Date) {
+                // Si c'est déjà un objet Date
+                eventDate = params.data.event_date;
+                console.log('Date déjà au format Date:', eventDate);
+            } else {
+                // Si c'est un autre format (comme un timestamp)
+                eventDate = new Date(params.data.event_date);
+                console.log('Date convertie à partir d\'un autre format:', eventDate);
+            }
+            
+            // Vérifier si la date est valide
+            if (isNaN(eventDate.getTime())) {
+                console.error('Date invalide:', params.data.event_date);
+                throw new Error('Date invalide: ' + JSON.stringify(params.data.event_date));
+            }
+            
+            // Formater la date en ISO string
+            const formattedDate = eventDate.toISOString();
+            console.log('Date formatée en ISO:', formattedDate);
+
             const eventData = {
                 event_name: params.data.event_name,
-                event_date: params.data.event_date,
+                event_date: formattedDate,
                 event_place: params.data.event_place,
                 event_category: params.data.event_category,
                 event_description: params.data.event_description,
                 event_image: params.data.event_image,
                 event_organizer: params.data.event_organizer,
-                event_status: params.data.event_status || 'DRAFT'
+                event_status: params.data.event_status || 'DRAFT',
+                event_tickets_limit_by_user_by_type: params.data.event_tickets_limit_by_user_by_type,
+                admin_id: "A001",
+                event_creation_date: new Date().toISOString()
             };
+
+            console.log('Données envoyées au serveur:', eventData);
 
             const { json } = await httpClient(`${apiUrl}`, {
                 method: 'POST',
@@ -174,6 +236,7 @@ const eventsDataProvider = {
             const processedEvent = await eventsDataProvider.processEventData(json);
             return { data: processedEvent };
         } catch (error) {
+            console.error('Erreur lors de la création de l\'événement:', error);
             handleError(error, 'Failed to create event');
         }
     },
@@ -188,7 +251,8 @@ const eventsDataProvider = {
                 event_description: params.data.event_description,
                 event_image: params.data.event_image,
                 event_organizer: params.data.event_organizer,
-                event_status: params.data.event_status
+                event_status: params.data.event_status,
+                event_tickets_limit_by_user_by_type: params.data.event_tickets_limit_by_user_by_type
             };
 
             const { json } = await httpClient(`${apiUrl}/${params.id}`, {
@@ -295,5 +359,5 @@ const eventsDataProvider = {
     },
 };
 
-export type { CreateTicketsParams, DeleteTicketsParams, Event, EventParams, TicketStats, GetTicketsParams };
+export type { CreateTicketsParams, DeleteTicketsParams, Event, EventParams, TicketStats, GetTicketsParams, GetPaginatedTicketsParams };
 export { TicketType, eventsDataProvider };

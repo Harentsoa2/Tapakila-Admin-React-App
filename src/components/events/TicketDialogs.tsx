@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField as
 import { useNotify } from 'react-admin';
 import { eventsDataProvider } from '../../data/events-data-provider';
 
-enum TicketType {
+export enum TicketType {
     STANDARD = 'STANDARD',
     VIP = 'VIP',
     EARLY_BIRD = 'EARLY_BIRD'

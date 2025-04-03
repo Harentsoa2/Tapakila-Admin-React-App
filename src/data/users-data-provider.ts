@@ -12,7 +12,7 @@ export const userDataProvider: DataProvider = {
       _limit: perPage,
       _sort: field,
       _order: order.toLowerCase(),
-      ...params.filter, // Ajoute les filtres si présents
+      ...params.filter, 
     };
 
     return httpClient(`${url}/${resource}?${new URLSearchParams(query).toString()}`)

@@ -14,6 +14,7 @@ import {
 } from 'react-admin';
 import { eventsDataProvider } from "./events-data-provider";
 import { userDataProvider } from "./users-data-provider";
+import { contactDataProvider } from "./contact-data-provider";
 
 interface Event extends RaRecord {
   available_tickets: number;
@@ -52,6 +53,8 @@ const compositeDataProvider: CustomDataProvider = {
       result = await eventsDataProvider.getList(resource, params) as GetListResult<Event>;
     } else if (resource === "users") {
       result = await userDataProvider.getList(resource, params) as GetListResult<User>;
+    } else if (resource === "contact") {
+      result = await contactDataProvider.getList();
     } else {
       throw new Error(`Unknown resource: ${resource}`);
     }
@@ -64,6 +67,8 @@ const compositeDataProvider: CustomDataProvider = {
       result = await eventsDataProvider.getOne(resource, params) as GetOneResult<Event>;
     } else if (resource === "users") {
       result = await userDataProvider.getOne(resource, params) as GetOneResult<User>;
+    } else if (resource === "contact") {
+      result = await contactDataProvider.getOne(params);
     } else {
       throw new Error(`Unknown resource: ${resource}`);
     }
@@ -82,7 +87,7 @@ const compositeDataProvider: CustomDataProvider = {
     } else {
       throw new Error(`Unknown resource: ${resource}`);
     }
-    return result as GetManyResult<RecordType> || { data: [] };
+    return result as unknown as GetManyResult<RecordType> || { data: [] };
   },
 
   getManyReference: async <RecordType extends RaRecord = any>(resource: string, params: any): Promise<GetManyReferenceResult<RecordType>> => {
@@ -94,7 +99,7 @@ const compositeDataProvider: CustomDataProvider = {
     } else {
       throw new Error(`Unknown resource: ${resource}`);
     }
-    return result as GetManyReferenceResult<RecordType> || { data: [], total: 0 };
+    return result as unknown as GetManyReferenceResult<RecordType> || { data: [], total: 0 };
   },
 
   update: async <RecordType extends RaRecord = any>(resource: string, params: any): Promise<UpdateResult<RecordType>> => {
@@ -109,7 +114,7 @@ const compositeDataProvider: CustomDataProvider = {
     if (!result) {
       throw new Error(`Update failed`);
     }
-    return result as UpdateResult<RecordType>;
+    return result as unknown as UpdateResult<RecordType>;
   },
 
   updateMany: async <RecordType extends RaRecord = any>(resource: string, params: any): Promise<UpdateManyResult<RecordType>> => {
@@ -121,7 +126,7 @@ const compositeDataProvider: CustomDataProvider = {
     } else {
       throw new Error(`Unknown resource: ${resource}`);
     }
-    return result as UpdateManyResult<RecordType> || { data: [] };
+    return result as unknown as UpdateManyResult<RecordType> || { data: [] };
   },
 
   create: async <RecordType extends Omit<RaRecord, "id"> = any>(resource: string, params: any): Promise<CreateResult<RecordType & { id: Identifier }>> => {
@@ -136,7 +141,7 @@ const compositeDataProvider: CustomDataProvider = {
     if (!result) {
       throw new Error(`Create failed`);
     }
-    return result as CreateResult<RecordType & { id: Identifier }>;
+    return result as unknown as CreateResult<RecordType & { id: Identifier }>;
   },
 
   delete: async <RecordType extends RaRecord = any>(resource: string, params: any): Promise<DeleteResult<RecordType>> => {
@@ -145,6 +150,8 @@ const compositeDataProvider: CustomDataProvider = {
       result = await eventsDataProvider.delete(resource, params) as DeleteResult<Event>;
     } else if (resource === "users") {
       result = await userDataProvider.delete(resource, params) as DeleteResult<User>;
+    } else if (resource === "contact") {
+      result = await contactDataProvider.delete(params);
     } else {
       throw new Error(`Unknown resource: ${resource}`);
     }
@@ -163,7 +170,7 @@ const compositeDataProvider: CustomDataProvider = {
     } else {
       throw new Error(`Unknown resource: ${resource}`);
     }
-    return result as DeleteManyResult<RecordType> || { data: [] };
+    return result as unknown as DeleteManyResult<RecordType> || { data: [] };
   },
 
   getTicketsForEvent: async (resource: string, params: GetTicketsParams): Promise<number> => {
@@ -174,4 +181,5 @@ const compositeDataProvider: CustomDataProvider = {
   },
 };
 
-export { compositeDataProvider, Event, User };
+export { compositeDataProvider };  export type { Event, User };
+

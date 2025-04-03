@@ -173,7 +173,14 @@ const TicketsTab = () => {
                   }
                 }}
               />
-     
+              <DateField
+            source="ticket_creation_date"
+            label="Date création"
+            showTime
+            locales="fr-FR"
+                />
+            
+    
              <TextField source="user_id" label="Acheté par" />
             </Datagrid>
             
@@ -477,7 +484,17 @@ const EventContent = () => {
                                             <Typography>{record.event_category}</Typography>
                                         </Box>
                                     </Box>
-
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                                <Person sx={{ color: 'primary.main' }} />
+                                                <Typography variant="subtitle2" color="textSecondary">
+                                                    Limite par utilisateur
+                                                </Typography>
+                                                <TextField 
+                                                    source="event_tickets_limit_by_user_by_type" 
+                                                    label="Nombre de billets par utilisateur par type"
+                                                    sx={{ minWidth: '200px' }}
+                                                />
+                                    </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                         <Person sx={{ color: 'primary.main' }} />
                                         <Box>
@@ -495,6 +512,7 @@ const EventContent = () => {
                                                 Billets
                                             </Typography>
                                             <TicketRatioField />
+                                           
                                             <Box sx={{ mt: 1, display: 'flex', gap: 2 }}>
                                                 <MuiButton
                                                     variant="contained"

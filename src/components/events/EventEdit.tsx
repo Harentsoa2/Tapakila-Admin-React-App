@@ -1,4 +1,4 @@
-import { Edit, SimpleForm, TextInput, DateTimeInput, required, useRecordContext, TopToolbar, ShowButton, useInput } from 'react-admin';
+import { Edit, SimpleForm, TextInput, DateTimeInput, required, useRecordContext, TopToolbar, ShowButton, useInput, NumberInput } from 'react-admin';
 import { Box } from '@mui/material';
 import CloudinaryUpload from './ImageInput';
 
@@ -13,10 +13,7 @@ const EventActions = () => (
     </TopToolbar>
 );
 
-const ImageInputField = () => {
-    const { field } = useInput({ source: 'event_image' });
-    return <ImageInput value={field.value} onChange={field.onChange} />;
-};
+
 
 export const EventEdit = () => {
     return (
@@ -80,6 +77,12 @@ export const EventEdit = () => {
                         rows={4}
                         fullWidth
                         sx={{ gridColumn: { xs: '1', sm: '2 / span 2' }, mb: 2 }}
+                    />
+
+                    <NumberInput
+                        source="event_tickets_limit_by_user_by_type"
+                        label="Nombre de billets par utilisateur par type"
+                        validate={[required()]}
                     />
 
                     {/* Informations supplémentaires (sur 3 colonnes) */}

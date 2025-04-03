@@ -1,5 +1,6 @@
-import { Create, SimpleForm, TextInput, DateTimeInput, required } from 'react-admin';
+import { Create, SimpleForm, TextInput, DateTimeInput, required, NumberInput } from 'react-admin';
 import { Box } from '@mui/material';
+import CloudinaryUpload from './ImageInput';
 
 export const EventCreate = () => (
     <Create redirect="list">
@@ -27,6 +28,10 @@ export const EventCreate = () => (
                     label="Date et heure"
                     validate={[required()]}
                     fullWidth
+                    options={{
+                        format: 'yyyy-MM-dd HH:mm:ss',
+                        ampm: false
+                    }}
                 />
 
                 <TextInput
@@ -49,12 +54,16 @@ export const EventCreate = () => (
                     fullWidth
                 />
 
-                <TextInput
-                    source="event_image"
-                    label="Image URL"
+                <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 3' } }}>
+                        <CloudinaryUpload source="event_image" />
+                </Box>
+
+                <NumberInput
+                    source="event_tickets_limit_by_user_by_type"
+                    label="Nombre de billets par utilisateur par type"
                     fullWidth
                 />
-
+                
                 <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 2' } }}>
                     <TextInput
                         source="event_description"
