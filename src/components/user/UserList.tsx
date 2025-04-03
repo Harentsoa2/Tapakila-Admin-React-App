@@ -76,7 +76,7 @@ export const UserList = () => {
           source="user_first_login_date"
           label="Date de création"
           showTime
-          sx={{ color: "#0077FF", fontFamily: "Poppins", fontSize: "1rem"}}
+          sx={{ color: "#0077FF", fontFamily: "Poppins"}}
         />
       </Datagrid>
     </List>
