@@ -109,11 +109,11 @@ export default function TicketUser() {
           label="Prix (Ar)"
           sx={{ fontFamily: "Poppins" }}
         />
-        <ReferenceField
+        <FunctionField label={"Evenement"} render={(record: any) => (        
+          <ReferenceField
           reference="events"
-          label={"Evenement"}
           source="event_id"
-          link={"/events"}
+          link={`/events/${record.event_id}/show`}
           sx={{
             "& .RaReferenceField-link": {
               fontPalette: "#0077FF",
@@ -128,7 +128,7 @@ export default function TicketUser() {
               fontSize: "1.1rem",
             }}
           />
-        </ReferenceField>
+        </ReferenceField>)} />
       </Datagrid>
     </ArrayField>
   );
