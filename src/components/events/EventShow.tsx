@@ -173,13 +173,8 @@ const TicketsTab = () => {
                   }
                 }}
               />
-              <DateField
-                source="ticket_creation_date"
-                label="Date création"
-                showTime
-                locales="fr-FR"
-              />
-              <TextField source="user_id" label="Acheté par" />
+     
+             <TextField source="user_id" label="Acheté par" />
             </Datagrid>
             
             <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />

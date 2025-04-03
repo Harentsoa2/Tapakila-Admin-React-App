@@ -1,6 +1,6 @@
 import { Edit, SimpleForm, TextInput, DateTimeInput, required, useRecordContext, TopToolbar, ShowButton, useInput } from 'react-admin';
 import { Box } from '@mui/material';
-import { ImageInput } from './ImageInput';
+import CloudinaryUpload from './ImageInput';
 
 const EventTitle = () => {
     const record = useRecordContext();
@@ -13,9 +13,12 @@ const EventActions = () => (
     </TopToolbar>
 );
 
-export const EventEdit = () => {
+const ImageInputField = () => {
     const { field } = useInput({ source: 'event_image' });
+    return <ImageInput value={field.value} onChange={field.onChange} />;
+};
 
+export const EventEdit = () => {
     return (
         <Edit 
             title={<EventTitle />}
@@ -27,12 +30,13 @@ export const EventEdit = () => {
                     sx={{
                         '& .RaSimpleForm-form': {
                             display: 'grid',
-                            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' },
                             gap: 3
                         }
                     }}
                 >
-                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 2' } }}>
+                    {/* Nom de l'événement (sur 3 colonnes) */}
+                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 3' } }}>
                         <TextInput
                             source="event_name"
                             label="Nom de l'événement"
@@ -42,6 +46,7 @@ export const EventEdit = () => {
                         />
                     </Box>
 
+                    {/* Trois champs en ligne */}
                     <DateTimeInput
                         source="event_date"
                         label="Date et heure"
@@ -60,25 +65,25 @@ export const EventEdit = () => {
                         validate={[required()]}
                     />
 
+                    {/* Deux champs en ligne */}
                     <TextInput
                         source="event_organizer"
                         label="Organisateur"
                         validate={[required()]}
                     />
 
-                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 2' } }}>
-                        <TextInput
-                            source="event_description"
-                            label="Description"
-                            validate={[required()]}
-                            multiline
-                            rows={4}
-                            fullWidth
-                            sx={{ mb: 2 }}
-                        />
-                    </Box>
+                    <TextInput
+                        source="event_description"
+                        label="Description"
+                        validate={[required()]}
+                        multiline
+                        rows={4}
+                        fullWidth
+                        sx={{ gridColumn: { xs: '1', sm: '2 / span 2' }, mb: 2 }}
+                    />
 
-                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 2' } }}>
+                    {/* Informations supplémentaires (sur 3 colonnes) */}
+                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 3' } }}>
                         <TextInput
                             source="additional_info"
                             label="Informations supplémentaires"
@@ -88,11 +93,14 @@ export const EventEdit = () => {
                         />
                     </Box>
 
-                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 2' } }}>
-                        <ImageInput value={field.value} onChange={field.onChange} />
+                    {/* Upload d'image (sur 3 colonnes) */}
+                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / span 3' } }}>
+                        <CloudinaryUpload source="event_image" />
                     </Box>
                 </SimpleForm>
             </Box>
         </Edit>
     );
 };
+
+

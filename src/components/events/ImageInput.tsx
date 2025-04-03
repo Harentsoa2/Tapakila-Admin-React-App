@@ -1,81 +1,48 @@
+// components/CloudinaryUpload.js
 import { useState } from 'react';
-import { useNotify } from 'react-admin';
-import { Box, Button, CircularProgress } from '@mui/material';
-import { CloudUpload } from '@mui/icons-material';
+import { useInput, useNotify } from 'react-admin';
+import { AdvancedImage } from '@cloudinary/react';
+import { Cloudinary } from '@cloudinary/url-gen';
 
-interface ImageInputProps {
-    value?: string;
-    onChange: (value: string) => void;
-}
+const CloudinaryUpload = ({ source }) => {
+  const notify = useNotify();
+  const { field } = useInput({ source });
+  const [imageUrl, setImageUrl] = useState('');
+  const cld = new Cloudinary({ cloud: { cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME } });
 
-export const ImageInput = ({ value, onChange }: ImageInputProps) => {
-    const [loading, setLoading] = useState(false);
-    const notify = useNotify();
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'ml_default');
 
-    const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.files?.[0]) return;
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        { method: 'POST', body: formData }
+      );
+      const data = await response.json();
+      setImageUrl(data.secure_url);
+      field.onChange(data.secure_url);
+      notify('Image uploaded successfully', { type: 'success' });
+    } catch (error) {
+      notify('Upload failed', { type: 'error' });
+    }
+  };
 
-        setLoading(true);
-        const file = event.target.files[0];
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'tapakila');
-
-        try {
-            const response = await fetch(
-                `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-                {
-                    method: 'POST',
-                    body: formData,
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Upload failed');
-            }
-
-            const data = await response.json();
-            onChange(data.secure_url);
-            notify('Image téléchargée avec succès', { type: 'success' });
-        } catch (error) {
-            console.error('Upload error:', error);
-            notify('Erreur lors du téléchargement de l\'image', { type: 'error' });
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <Box>
-            {value && (
-                <Box sx={{ mb: 2 }}>
-                    <img 
-                        src={value}
-                        alt="Event preview" 
-                        style={{ 
-                            width: '100%',
-                            maxHeight: '200px',
-                            objectFit: 'cover',
-                            borderRadius: '4px'
-                        }} 
-                    />
-                </Box>
-            )}
-            <Button
-                variant="contained"
-                component="label"
-                startIcon={loading ? <CircularProgress size={20} /> : <CloudUpload />}
-                disabled={loading}
-                fullWidth
-            >
-                {loading ? 'Téléchargement...' : 'Télécharger une image'}
-                <input
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                />
-            </Button>
-        </Box>
-    );
+  return (
+    <div>
+      <input type="file" onChange={handleUpload} />
+      {imageUrl && (
+        <div style={{ marginTop: '10px' }}>
+          <AdvancedImage
+            cldImg={cld.image(imageUrl.split('/').pop().split('.')[0])}
+            width="300"
+          />
+        </div>
+      )}
+    </div>
+  );
 };
+
+export default CloudinaryUpload;
