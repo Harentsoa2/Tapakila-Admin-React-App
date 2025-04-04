@@ -571,4 +571,3 @@ export const EventShow = () => (
         <EventContent />
     </Show>
 );
-

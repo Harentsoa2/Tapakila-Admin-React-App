@@ -60,7 +60,6 @@ const apiUrl = "http://localhost:3000/api/events";
 const ticketsApiUrl = "http://localhost:3000/api/tickets";
 const httpClient = fetchUtils.fetchJson;
 
-
 const handleError = (error: any, message: string) => {
     console.error(message, error);
     throw new Error(message);
@@ -185,36 +184,15 @@ const eventsDataProvider = {
 
     create: async (_resource: string, params: { data: any }) => {
         try {
-            console.log('Données reçues pour création:', params.data);
-          
-            let eventDate;
-            if (typeof params.data.event_date === 'string') {
-              
-                eventDate = new Date(params.data.event_date);
-                console.log('Date parsée à partir de chaîne:', eventDate);
-            } else if (params.data.event_date instanceof Date) {
-               
-                eventDate = params.data.event_date;
-                console.log('Date déjà au format Date:', eventDate);
-            } else {
-              
-                eventDate = new Date(params.data.event_date);
-                console.log('Date convertie à partir d\'un autre format:', eventDate);
-            }
-            
-            
+           
+            const eventDate = new Date(params.data.event_date);
             if (isNaN(eventDate.getTime())) {
-                console.error('Date invalide:', params.data.event_date);
-                throw new Error('Date invalide: ' + JSON.stringify(params.data.event_date));
+                throw new Error('Date invalide');
             }
-            
-        
-            const formattedDate = eventDate.toISOString();
-            console.log('Date formatée en ISO:', formattedDate);
 
             const eventData = {
                 event_name: params.data.event_name,
-                event_date: formattedDate,
+                event_date: eventDate.toISOString(),
                 event_place: params.data.event_place,
                 event_category: params.data.event_category,
                 event_description: params.data.event_description,
@@ -226,8 +204,6 @@ const eventsDataProvider = {
                 event_creation_date: new Date().toISOString()
             };
 
-            console.log('Données envoyées au serveur:', eventData);
-
             const { json } = await httpClient(`${apiUrl}`, {
                 method: 'POST',
                 body: JSON.stringify(eventData),
@@ -236,7 +212,6 @@ const eventsDataProvider = {
             const processedEvent = await eventsDataProvider.processEventData(json);
             return { data: processedEvent };
         } catch (error) {
-            console.error('Erreur lors de la création de l\'événement:', error);
             handleError(error, 'Failed to create event');
         }
     },

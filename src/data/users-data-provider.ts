@@ -4,36 +4,26 @@ const url = "http://localhost:3000/api/users";
 const httpClient = fetchUtils.fetchJson;
 
 
-export const userDataProvider: DataProvider = {
-  getList: (resource, params) => {
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
-    const query = {
-      _page: page,
-      _limit: perPage,
-      _sort: field,
-      _order: order.toLowerCase(),
-      ...params.filter, 
-    };
-
-    return httpClient(`${url}/${resource}?${new URLSearchParams(query).toString()}`)
-      .then(({ json, headers }) => {
-        // Extraction du nombre total d'éléments depuis les headers
-        const total = parseInt(headers.get('x-total-count') || json.length, 10);
-        
-        return {
-          data: json.map((item: any) => ({
-            id: item.user_id,
-            ...item,
-          })),
-          total,
-        };
-      });
-  },
+export const userDataProvider = {
+  getList: async (params: any) => {
+    const { page, pageSize } = params;
+ 
+     const query = new URLSearchParams({
+      page: String(page),
+      pageSize: String(pageSize)
+    });
   
-  getOne: (resource, params) =>
-    httpClient(`${url}/${resource}/${params.id}`).then(({ json }) => ({
-        data: { ...json, id: json.user_id }
-    })),
+    const { json } = await httpClient(`${url}?${query.toString()}`);
+  
+    return {
+      data: json.data.map((user: any) => ({ id: user.user_id, ...user })),
+      total: json.total,
+    };
+  };
+
+  getOne: async (params: any) => {
+    const { json } = await httpClient(`${url}/${params.id}`);
+    return { data: { id: json.event_id, ...json } };
+  },
 
 };

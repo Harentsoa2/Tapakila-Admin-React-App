@@ -5,7 +5,6 @@ import {
   FunctionField,
   List,
   TextField,
-  Pagination
 } from "react-admin";
 
 const AvatarField = ({ record }: { record?: any }) => {
@@ -80,7 +79,6 @@ export const UserList = () => {
           sx={{ color: "#0077FF", fontFamily: "Poppins"}}
         />
       </Datagrid>
-      <Pagination />
     </List>
   );
 };

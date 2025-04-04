@@ -28,10 +28,6 @@ export const EventCreate = () => (
                     label="Date et heure"
                     validate={[required()]}
                     fullWidth
-                    options={{
-                        format: 'yyyy-MM-dd HH:mm:ss',
-                        ampm: false
-                    }}
                 />
 
                 <TextInput

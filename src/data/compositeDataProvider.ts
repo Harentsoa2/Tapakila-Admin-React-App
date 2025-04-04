@@ -53,7 +53,7 @@ const compositeDataProvider: CustomDataProvider = {
     if (resource === "events") {
       result = await eventsDataProvider.getList(resource, params) as GetListResult<Event>;
     } else if (resource === "users") {
-      result = await userDataProvider.getList(resource, params) as GetListResult<User>;
+      result = await userDataProvider.getList(params) as GetListResult<User>;
     } else if (resource === "contact") {
       result = await contactDataProvider.getList();
     } else {
@@ -68,7 +68,7 @@ const compositeDataProvider: CustomDataProvider = {
     if (resource === "events") {
       result = await eventsDataProvider.getOne(resource, params) as GetOneResult<Event>;
     } else if (resource === "users") {
-      result = await userDataProvider.getOne(resource, params) as GetOneResult<User>;
+      result = await userDataProvider.getOne(params) as GetOneResult<User>;
     } else if (resource === "contact") {
       result = await contactDataProvider.getOne(params);
     } else {
