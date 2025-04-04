@@ -60,6 +60,71 @@ const apiUrl = "http://localhost:3000/api/events";
 const ticketsApiUrl = "http://localhost:3000/api/tickets";
 const httpClient = fetchUtils.fetchJson;
 
+
+const safeDateConvert = (dateString: string | Date | null) => {
+  if (!dateString) return new Date();
+  try {
+    return new Date(dateString);
+  } catch {
+    return new Date();
+  }
+};
+
+const validateEventSchema = (event: any) => {
+  if (!event.event_id) {
+    throw new Error('Invalid event data: missing event_id');
+  }
+  return true;
+};
+
+
+const convertResponseDates = (event: any) => {
+  try {
+    validateEventSchema(event);
+    return {
+      id: event.event_id,
+      ...event,
+      event_date: safeDateConvert(event.event_date),
+      event_creation_date: safeDateConvert(event.event_creation_date),
+    };
+  } catch (error) {
+    console.error('Data conversion error:', error);
+    throw error;
+  }
+};
+
+
+const prepareRequestData = (data: any) => {
+  try {
+    const { id, ...requestData } = data;
+
+    if (!data.event_name) {
+      throw new Error('Event name is required');
+    }
+
+    return {
+      ...requestData,
+      event_id: id || `E${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+      event_date: safeDateConvert(data.event_date).toISOString(),
+      event_creation_date: data.event_creation_date
+        ? safeDateConvert(data.event_creation_date).toISOString()
+        : new Date().toISOString(),
+    };
+  } catch (error) {
+    console.error('Request preparation error:', error);
+    throw error;
+  }
+};
+
+const handleApiError = (error: any) => {
+  console.error('API Error:', error);
+  throw new Error(
+    error.body?.message ||
+    error.message ||
+    'Server communication failed'
+  );
+};
+
 const handleError = (error: any, message: string) => {
     console.error(message, error);
     throw new Error(message);

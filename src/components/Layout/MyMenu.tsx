@@ -1,5 +1,4 @@
 import { Event, Message, People } from "@mui/icons-material";
-// import { MenuList } from "@mui/material";
 import { Menu } from "react-admin";
 
 export const MyMenu = () => (
