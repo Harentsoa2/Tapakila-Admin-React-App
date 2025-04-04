@@ -16,7 +16,7 @@ const EventListContent = () => {
   if (isLoading)
     return <div style={{ background: "transparent" }}>Chargement en cours...</div>;
 
-  // Filtrer les evmnents par rapport a la date
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
