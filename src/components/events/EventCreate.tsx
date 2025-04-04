@@ -103,10 +103,9 @@ const EventCreate = () => {
       }
       sx={{
         '& .RaCreate-card': {
-          backgroundColor: lighten(theme.palette.primary.dark, 0.1),
-          border: `1px solid ${theme.palette.secondary.main}`,
+          background: "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5))",
           borderRadius: '12px',
-          boxShadow: `0 4px 20px ${theme.palette.secondary.dark}33`
+          boxShadow: `0 4px 20px #FFBA08`
         }
       }}
     >
@@ -128,9 +127,9 @@ const EventCreate = () => {
         }
       >
         <Card sx={{
-          mb: 3,
-          backgroundColor: lighten(theme.palette.primary.dark, 0.15),
-          borderLeft: `4px solid ${theme.palette.secondary.main}`
+          width: "100%",
+          margin: "20px 0",
+          borderLeft: `4px solid #FFBA08`
         }}>
           <CardContent>
             {error && (
@@ -140,7 +139,7 @@ const EventCreate = () => {
             )}
 
             <Typography variant="h6" gutterBottom sx={{
-              color: theme.palette.secondary.main,
+              color: "#0077FF",
               display: 'flex',
               alignItems: 'center'
             }}>
@@ -194,13 +193,12 @@ const EventCreate = () => {
         </Card>
 
         <Card sx={{
-          mb: 3,
-          backgroundColor: lighten(theme.palette.primary.dark, 0.15),
-          borderLeft: `4px solid ${theme.palette.secondary.main}`
+          width: "100%",
+          borderLeft: `4px solid #FFBA08`
         }}>
           <CardContent>
             <Typography variant="h6" gutterBottom sx={{
-              color: theme.palette.secondary.main,
+              color: "#0077FF",
               display: 'flex',
               alignItems: 'center'
             }}>

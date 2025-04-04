@@ -69,7 +69,6 @@ export const App = () => {
         requireAuth
         disableTelemetry
       >
-        {/* Ressource Utilisateurs */}
         <Resource
           name="users"
           list={UserList}
@@ -91,7 +90,6 @@ export const App = () => {
           }}
         />
 
-        {/* Ressource Contact (Messages) */}
         <Resource
           name="contact"
           list={MessageList}
