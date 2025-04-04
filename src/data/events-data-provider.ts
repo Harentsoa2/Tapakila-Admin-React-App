@@ -185,30 +185,29 @@ const eventsDataProvider = {
     create: async (_resource: string, params: { data: any }) => {
         try {
             console.log('Données reçues pour création:', params.data);
-            
-            // Vérifier si la date est déjà une chaîne ISO
+          
             let eventDate;
             if (typeof params.data.event_date === 'string') {
-                // Essayer de parser la date
+              
                 eventDate = new Date(params.data.event_date);
                 console.log('Date parsée à partir de chaîne:', eventDate);
             } else if (params.data.event_date instanceof Date) {
-                // Si c'est déjà un objet Date
+               
                 eventDate = params.data.event_date;
                 console.log('Date déjà au format Date:', eventDate);
             } else {
-                // Si c'est un autre format (comme un timestamp)
+              
                 eventDate = new Date(params.data.event_date);
                 console.log('Date convertie à partir d\'un autre format:', eventDate);
             }
             
-            // Vérifier si la date est valide
+            
             if (isNaN(eventDate.getTime())) {
                 console.error('Date invalide:', params.data.event_date);
                 throw new Error('Date invalide: ' + JSON.stringify(params.data.event_date));
             }
             
-            // Formater la date en ISO string
+        
             const formattedDate = eventDate.toISOString();
             console.log('Date formatée en ISO:', formattedDate);
 
