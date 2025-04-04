@@ -2,6 +2,7 @@ import { fetchUtils } from "react-admin";
 
 const url = "http://localhost:3000/api/contact";
 const httpClient = fetchUtils.fetchJson;
+
 export const contactDataProvider = {
   getList: async (params = { pagination: { page: 1, perPage: 10 }, sort: { field: "id", order: "ASC" }, filter: {} }) => {
     const { pagination } = params;
@@ -29,6 +30,7 @@ export const contactDataProvider = {
         total: json.length, 
     };
   },
+
 
 
   getOne: async (params: any) => {

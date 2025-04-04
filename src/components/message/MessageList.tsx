@@ -5,7 +5,7 @@ import {
   DeleteButton,
   List,
   Pagination,
-  RichTextField,
+ RichTextField,
   TextField,
 } from "react-admin";
 
@@ -24,6 +24,7 @@ const MyExpand = () => {
     />
   );
 };
+
 
 const CustomPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25]} />;
 

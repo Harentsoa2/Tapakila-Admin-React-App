@@ -1,3 +1,4 @@
+
 import { 
   DataProvider,
   GetListResult,
@@ -61,6 +62,7 @@ const compositeDataProvider: CustomDataProvider = {
     return result as GetListResult<RecordType>;
   },
 
+
   getOne: async <RecordType extends RaRecord = any>(resource: string, params: any): Promise<GetOneResult<RecordType>> => {
     let result;
     if (resource === "events") {
@@ -78,6 +80,7 @@ const compositeDataProvider: CustomDataProvider = {
     return result as GetOneResult<RecordType>;
   },
 
+
   getMany: async <RecordType extends RaRecord = any>(resource: string, params: any): Promise<GetManyResult<RecordType>> => {
     let result;
     if (resource === "events") {
@@ -86,9 +89,11 @@ const compositeDataProvider: CustomDataProvider = {
       result = await userDataProvider.getMany(resource, params) as GetManyResult<User>;
     } else {
       throw new Error(`Unknown resource: ${resource}`);
+
     }
     return result as unknown as GetManyResult<RecordType> || { data: [] };
   },
+
 
   getManyReference: async <RecordType extends RaRecord = any>(resource: string, params: any): Promise<GetManyReferenceResult<RecordType>> => {
     let result;
@@ -116,6 +121,7 @@ const compositeDataProvider: CustomDataProvider = {
     }
     return result as unknown as UpdateResult<RecordType>;
   },
+
 
   updateMany: async <RecordType extends RaRecord = any>(resource: string, params: any): Promise<UpdateManyResult<RecordType>> => {
     let result;

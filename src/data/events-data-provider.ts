@@ -60,6 +60,7 @@ const apiUrl = "http://localhost:3000/api/events";
 const ticketsApiUrl = "http://localhost:3000/api/tickets";
 const httpClient = fetchUtils.fetchJson;
 
+
 const handleError = (error: any, message: string) => {
     console.error(message, error);
     throw new Error(message);

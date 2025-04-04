@@ -23,6 +23,7 @@ export const EventList = () => {
 const EventListContent = () => {
   const { data = [], isLoading } = useListContext();
 
+
   if (isLoading) {
     return (
       <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
@@ -30,6 +31,7 @@ const EventListContent = () => {
       </Box>
     );
   }
+
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -45,9 +47,11 @@ const EventListContent = () => {
   });
 
   return (
+
     <Box sx={{ p: 2 }}>
       <Typography variant="h5" sx={{ mb: 3, color: '#2e7d32', fontWeight: 'bold' }}>
         Événements à venir ({upcomingEvents.length})
+
       </Typography>
       
       {upcomingEvents.length > 0 ? (
@@ -64,6 +68,7 @@ const EventListContent = () => {
         </Typography>
       )}
 
+
       {pastEvents.length > 0 && (
         <>
           <Typography variant="h5" sx={{ mt: 4, mb: 3, color: '#757575', fontWeight: 'bold' }}>
@@ -77,6 +82,7 @@ const EventListContent = () => {
             ))}
           </Grid>
         </>
+
       )}
     </Box>
   );

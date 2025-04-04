@@ -1,7 +1,8 @@
-import { DataProvider, fetchUtils } from "react-admin";
+import { fetchUtils } from "react-admin";
 
-const url = "http://localhost:3000/api";
+const url = "http://localhost:3000/api/users";
 const httpClient = fetchUtils.fetchJson;
+
 
 export const userDataProvider: DataProvider = {
   getList: (resource, params) => {
@@ -34,4 +35,5 @@ export const userDataProvider: DataProvider = {
     httpClient(`${url}/${resource}/${params.id}`).then(({ json }) => ({
         data: { ...json, id: json.user_id }
     })),
+
 };

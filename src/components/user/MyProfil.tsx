@@ -1,29 +1,24 @@
-import {
-  Avatar,
-  Box,
-  Divider,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
 import { DateField, TextField } from "react-admin";
 
-export default function MyProfil({record} : {record: any}) {
+export default function MyProfil({ record }: { record: any }) {
   return (
     <Box
       sx={{
-        display: "flex",
         gap: 5,
-        alignItems: "flex-start",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         padding: "20px 0",
       }}
     >
-      <Stack alignItems="center">
+      <Stack>
         <Avatar
           src={record.user_image}
           aria-label="Profil"
           sx={{
-            width: 80,
-            height: 80,
+            width: 200,
+            height: 200,
             border: "3px solid #FFBA08",
             backgroundColor: "#0077FF",
             color: "white",
@@ -32,6 +27,24 @@ export default function MyProfil({record} : {record: any}) {
             marginBottom: 2,
           }}
         />
+      </Stack>
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{
+          backgroundColor: "#FFBA08",
+          width: "2px",
+        }}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          flex: 1,
+          paddingTop: "10px",
+        }}
+      >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography
             variant="body1"
@@ -53,24 +66,6 @@ export default function MyProfil({record} : {record: any}) {
             }}
           />
         </Box>
-      </Stack>
-      <Divider
-        orientation="vertical"
-        flexItem
-        sx={{
-          backgroundColor: "#FFBA08",
-          width: "2px",
-        }}
-      />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          flex: 1,
-          paddingTop: "10px",
-        }}
-      >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography
             variant="body1"
@@ -133,7 +128,7 @@ export default function MyProfil({record} : {record: any}) {
               day: "numeric",
               hour: "numeric",
               minute: "numeric",
-              second: "numeric"
+              second: "numeric",
             }}
             sx={{
               paddingLeft: "10px",
