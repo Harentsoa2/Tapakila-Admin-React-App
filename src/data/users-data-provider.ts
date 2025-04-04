@@ -16,10 +16,10 @@ export const userDataProvider = {
     const { json } = await httpClient(`${url}?${query.toString()}`);
   
     return {
-      data: json.data.map((user: any) => ({ id: user.user_id, ...user })),
-      total: json.total,
+      data: json.map((user: any) => ({ id: user.user_id, ...user })),
+      total: json.length,
     };
-  };
+  },
 
   getOne: async (params: any) => {
     const { json } = await httpClient(`${url}/${params.id}`);

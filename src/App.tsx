@@ -19,8 +19,8 @@ import MessageList from "./components/message/MessageList.tsx";
 export const App = () => {
   return (
     <Admin
-    //  loginPage={LoginPage}
-     // authProvider={authProvider}
+    loginPage={LoginPage}
+      authProvider={authProvider}
       dataProvider={compositeDataProvider}
       layout={Layout}
     >
